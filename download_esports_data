@@ -1,0 +1,37 @@
+import bs4, requests, pandas as pd
+
+HomeTeam = []
+AwayTeam = []
+Score = []
+Date = []
+
+for page in range (1,2):
+    res = requests.get('https://betsapi.com/le/22537/Esoccer-Liga-Pro--12-mins-play/p.'+str(page))
+    soup = bs4.BeautifulSoup(res.text, features = "lxml")
+    for num in range (1,31):
+        HT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(3) > a:nth-child(1)')
+        AT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(3) > a:nth-child(2)')
+        SC = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(4) > a')
+        DT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td.dt_n')
+        HomeTeam.append(HT[0].text.strip())
+        AwayTeam.append(AT[0].text.strip())
+        Score.append(SC[0].text.strip())
+        Date.append(DT[0].text.strip())
+        
+df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, Score)), columns =['Date', 'HomeTeam', 'AwayTeam', 'Score']) 
+df['HomeGoals'] = df['Score'].apply(lambda x: x.split('-')[0])
+df['AwayGoals'] = df['Score'].apply(lambda x: x.split('-')[-1])
+
+full_date = []
+for i in range(len(df.Date)):
+    full_date.append(df.Date[i][0:5]+'/20'+df.Date[i][5:11])
+full_date
+df['Time'] = full_date
+df['Datetime'] = pd.to_datetime(df['Time'])
+
+cols = ['Datetime', 'HomeTeam', 'AwayTeam', 'HomeGoals', 'AwayGoals']
+df = df[cols]
+df = df.reindex(index=df.index[::-1])
+
+df.to_excel('df.xlsx', encoding='utf-8', index=False)
+
