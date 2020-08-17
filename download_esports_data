@@ -33,5 +33,9 @@ cols = ['Datetime', 'HomeTeam', 'AwayTeam', 'HomeGoals', 'AwayGoals']
 df = df[cols]
 df = df.reindex(index=df.index[::-1])
 
+df['Date'] = df['Datetime'].dt.date
+df = df.drop_duplicates(subset=['HomeTeam', 'AwayTeam', 'HomeGoals', 'AwayGoals', 'Date'], keep='first')
+del df['Date']
+
 df.to_excel('df.xlsx', encoding='utf-8', index=False)
 
