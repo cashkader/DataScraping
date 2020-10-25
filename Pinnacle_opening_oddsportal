@@ -25,3 +25,20 @@ for i in range (1,100):
         bookie_list.append(ell(i))
     else:
         break
+        
+terminate = False
+def Notify():
+    if 'Pinnacle' in bookie_list:
+        conn = smtplib.SMTP('smtp.gmail.com', 587)
+        conn.ehlo()
+        conn.starttls()
+        conn.login('cashcadeur@gmail.com', 'mr619619')
+        conn.sendmail('cashcadeur@gmail.com', 'cashcadeur@gmail.com', game +'added in Pinnacle') 
+        global terminate
+        terminate = True
+        
+schedule.every(1).minutes.do(Notify)
+
+while not terminate:
+    schedule.run_pending()
+    time.sleep(1)
