@@ -1,5 +1,5 @@
 from selenium import webdriver
-import time, schedule
+import time, schedule, smtplib
 
 driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
 match_url = 'https://www.oddsportal.com/soccer/norway/eliteserien/aalesund-odds-bk-vqRhCUMe/'
