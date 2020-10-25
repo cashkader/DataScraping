@@ -1,6 +1,8 @@
 from selenium import webdriver
 import time, schedule, smtplib
 
+email = 
+password = 
 driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
 match_url = 'https://www.oddsportal.com/soccer/norway/eliteserien/aalesund-odds-bk-vqRhCUMe/'
 
@@ -33,8 +35,8 @@ def Notify():
         conn = smtplib.SMTP('smtp.gmail.com', 587)
         conn.ehlo()
         conn.starttls()
-        conn.login('cashcadeur@gmail.com', 'mr619619')
-        conn.sendmail('cashcadeur@gmail.com', 'cashcadeur@gmail.com', game +'added in Pinnacle') 
+        conn.login(email, password)
+        conn.sendmail(email, email, game +' added in Pinnacle') 
         global terminate
         terminate = True
         
