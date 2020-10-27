@@ -1,0 +1,43 @@
+from selenium import webdriver
+from pprint import pprint
+import time, datetime, schedule, smtplib
+
+driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
+match_url = 'https://www.oddsportal.com/soccer/saudi-arabia/king-cup/al-ahli-sc-al-nassr-G8nYb3ri/'
+
+def fi(xpath):
+    try:
+        driver.find_element_by_xpath(xpath).text
+    except:
+        return False
+    
+def ffi(xpath):
+    if fi(xpath) != False:
+        return driver.find_element_by_xpath(xpath).text
+
+def bookies(i):
+    return ffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr['+str(i)+']/td[1]/div/a[2]')
+
+def odds(i,j):
+    return ffi('//*[@id="odds-data-table"]/div/table/tbody/tr['+str(i)+']/td['+str(j)+']/div')
+
+driver.get(match_url)
+def Notify():
+    odds_table = {}
+    for i in range (1,50):
+        if bookies(i) is not None:
+            odd_list = []
+            for j in range (2,5):                
+                odd_list.append(odds(i,j))
+            odds_table.update({bookies(i):odd_list})
+        else:
+            break
+    print(datetime.datetime.now())
+    pprint(odds_table)
+    print('\n')
+          
+schedule.every(30).seconds.do(Notify)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
