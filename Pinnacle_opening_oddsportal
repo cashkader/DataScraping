@@ -38,7 +38,7 @@ def Notify():
         conn.ehlo()
         conn.starttls()
         conn.login(email, password)
-        conn.sendmail(email, email, 'Subject: ' + game + ' in Pinnacle\n\nPick: ' + pick + ' , Odd: ' + odd 
+        conn.sendmail(email, email, 'Subject: ' + game + ' in Pinnacle\n\nPick: ' + pick + ' , Odd: ' + odd)
         global terminate
         terminate = True
         
