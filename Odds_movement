@@ -3,23 +3,23 @@ from pprint import pprint
 import time, datetime, schedule, smtplib
 
 driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
-match_url = 'https://www.oddsportal.com/soccer/saudi-arabia/king-cup/al-ahli-sc-al-nassr-G8nYb3ri/'
+match_url = 'https://www.oddsportal.com/soccer/europe/champions-league/liverpool-midtjylland-j9JxTdEb/#1X2;2'
 
 def fi(xpath):
     try:
-        driver.find_element_by_xpath(xpath).text
+        driver.find_element_by_css_selector(xpath).text
     except:
         return False
     
 def ffi(xpath):
     if fi(xpath) != False:
-        return driver.find_element_by_xpath(xpath).text
+        return driver.find_element_by_css_selector(xpath).text
 
 def bookies(i):
-    return ffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr['+str(i)+']/td[1]/div/a[2]')
+    return ffi('#odds-data-table > div:nth-child(1) > table > tbody > tr:nth-child('+str(i)+') > td:nth-child(1) > div > a.name')
 
 def odds(i,j):
-    return ffi('//*[@id="odds-data-table"]/div/table/tbody/tr['+str(i)+']/td['+str(j)+']/div')
+    return ffi('#odds-data-table > div:nth-child(1) > table > tbody > tr:nth-child('+str(i)+') > td:nth-child('+str(j)+') > a')
 
 driver.get(match_url)
 def Notify():
