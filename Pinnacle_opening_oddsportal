@@ -3,6 +3,8 @@ import time, schedule, smtplib
 
 email = 
 password = 
+pick =
+odd = 
 driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
 match_url = 'https://www.oddsportal.com/soccer/norway/eliteserien/aalesund-odds-bk-vqRhCUMe/'
 
@@ -36,7 +38,7 @@ def Notify():
         conn.ehlo()
         conn.starttls()
         conn.login(email, password)
-        conn.sendmail(email, email, 'Subject: ' + game + ' in Pinnacle\n\nOdds for the game ' + game + ' have opened in Pinnacle!') 
+        conn.sendmail(email, email, 'Subject: ' + game + ' in Pinnacle\n\nPick: ' + pick + ' , Odd: ' + odd 
         global terminate
         terminate = True
         
