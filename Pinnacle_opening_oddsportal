@@ -27,6 +27,7 @@ game = driver.find_element_by_xpath('//*[@id="col-content"]/h1').text
         
 terminate = False
 def Notify():
+    driver.refresh()
     bookie_list = []
     for i in range (1,50):
         if ell(i) is not None:
