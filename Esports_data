@@ -4,6 +4,7 @@ HomeTeam = []
 AwayTeam = []
 Score = []
 Date = []
+OddsLinks = []
 
 for page in range (1,2):
     res = requests.get('https://betsapi.com/le/22537/Esoccer-Liga-Pro--12-mins-play/p.'+str(page))
@@ -21,6 +22,7 @@ for page in range (1,2):
         AwayTeam.append(AT.text.strip())
         Score.append(SC.text.strip())
         Date.append(DT.text.strip())
+        OddsLinks.extend([a['href'] for a in SC])
         
 df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, Score)), columns =['Date', 'HomeTeam', 'AwayTeam', 'Score']) 
 df['HomeGoals'] = df['Score'].apply(lambda x: x.split('-')[0])
