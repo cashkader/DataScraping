@@ -1,0 +1,19 @@
+import bs4, requests, pandas as pd
+
+Teams = []
+Ratings = []
+
+for page in range (1,24):
+    res = requests.get('https://www.fifaindex.com/teams/fifa21/'+str(page))
+    soup = bs4.BeautifulSoup(res.text, features = "lxml")
+    for num in range (3,43): 
+        try:
+            team = soup.select('body > main > div > div:nth-child(3) > div.col-lg-8 > div.responsive-table.table-rounded > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(2) > a')
+            rating = soup.select('body > main > div > div:nth-child(3) > div.col-lg-8 > div.responsive-table.table-rounded > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(7) > span')
+            Teams.append(team[0].text.strip())
+            Ratings.append(rating[0].text.strip())
+        except IndexError:
+            pass
+            
+ df = pd.DataFrame(list(zip(Teams, Ratings)), columns =['Team', 'Rating']) 
+ df.to_excel('FIFA21 Ratings.xlsx', encoding='utf-8', index=False)
