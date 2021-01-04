@@ -29,6 +29,9 @@ HomeTeam = [match.split(' - ')[0] for match in Match]
 AwayTeam = [match.split(' - ')[1] for match in Match]
 Date = [game[-12:] for game in Games]
 
-HomeOdd = [odd[:4] for odd in HomeOdds]
-DrawOdd = [odd[:4] for odd in DrawOdds]
-AwayOdd = [odd[:4] for odd in AwayOdds]
+HomeOdd = [odd[:4].replace(",", ".") for odd in HomeOdds]
+DrawOdd = [odd[:4].replace(",", ".") for odd in DrawOdds]
+AwayOdd = [odd[:4].replace(",", ".") for odd in AwayOdds]
+
+df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, HomeOdd, DrawOdd, AwayOdd)), columns =['Date', 'HomeTeam', 'AwayTeam', 'HomeOdd', 'DrawOdd', 'AwayOdd']) 
+df.to_excel('tippmix.xlsx', encoding='utf-8', index=False)
