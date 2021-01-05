@@ -21,10 +21,8 @@ for page in range (1,2):
 OddsLinks = ['https://betsapi.com'+link[:2]+'s'+link[2:] for link in OddsLinks]
 Home = [w.replace(' Esports', '') for w in HomeTeam]
 Home = [w.replace('Chrisx', 'Chris?') for w in Home]
-Home = [w.replace('Chrisx', 'Chris?') for w in Home]
 Home = [w.replace('USA', 'United States') for w in Home]
 Away = [w.replace(' Esports', '') for w in AwayTeam]
-Away = [w.replace('Chrisx', 'Chris?') for w in Away]
 Away = [w.replace('Chrisx', 'Chris?') for w in Away]
 Away = [w.replace('USA', 'United States') for w in Away]
 
