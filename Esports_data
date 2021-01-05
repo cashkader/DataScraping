@@ -1,10 +1,6 @@
 import bs4, requests, pandas as pd
 
-HomeTeam = []
-AwayTeam = []
-Score = []
-Date = []
-OddsLinks = []
+HomeTeam, AwayTeam, Score, Date, OddsLinks = ([],[],[],[],[])
 
 for page in range (1,2):
     res = requests.get('https://betsapi.com/le/22537/Esoccer-Liga-Pro--12-mins-play/p.'+str(page))
