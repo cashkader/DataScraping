@@ -44,11 +44,7 @@ def Notify():
         else:
             break
     if 'Pinnacle' in bookie_list:
-        conn = smtplib.SMTP('smtp.gmail.com', 587)
-        conn.ehlo()
-        conn.starttls()
-        conn.login(email, password)
-        conn.sendmail(email, email, 'Subject: ' + game + ' in Pinnacle\n\nPick: ' + str(pick) + ' , Odd: ' + str(odd))
+        send_message(game + ' in Pinnacle\nPick: ' + str(pick) + ' , Odd: ' + str(odd))
         global terminate
         terminate = True
         
