@@ -2,8 +2,8 @@ from selenium import webdriver
 import time, schedule, smtplib, requests
 
 driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
-telegram_token =
-telegram_chat_id =
+telegram_token = '1574424631:AAFXH0EdNXiJSbm6yFasM7F_y8GIovp8XaM'
+telegram_chat_id = '-1001155462245'
 match_url = input('Oddsportal url: ')
 pick = input('Pick: ')
 odd = input ('Odd: ')
@@ -52,7 +52,7 @@ def Notify():
         global terminate
         terminate = True
         
-schedule.every(1).minutes.do(Notify)
+schedule.every(30).seconds.do(Notify)
 
 while not terminate:
     schedule.run_pending()
