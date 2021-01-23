@@ -1,0 +1,50 @@
+from selenium import webdriver
+import time, schedule, smtplib
+
+driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
+email =
+password =
+match_url = input('Oddsportal url: ')
+pick = input('Pick: ')
+odd = input ('Odd: ')
+
+driver.get(match_url)
+
+def fi(bookie_xpath):
+    try:
+        driver.find_element_by_xpath(bookie_xpath).text
+    except:
+        return False
+    
+def ffi(bookie_xpath):
+    if fi(bookie_xpath) != False:
+        return driver.find_element_by_xpath(bookie_xpath).text
+    
+def ell(i):
+    return ffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr['+str(i)+']/td[1]/div/a[2]')
+
+game = driver.find_element_by_xpath('//*[@id="col-content"]/h1').text
+        
+terminate = False
+def Notify():
+    driver.refresh()
+    bookie_list = []
+    for i in range (1,50):
+        if ell(i) is not None:
+            bookie_list.append(ell(i))
+        else:
+            break
+    if 'Pinnacle' in bookie_list:
+        conn = smtplib.SMTP('smtp.gmail.com', 587)
+        conn.ehlo()
+        conn.starttls()
+        conn.login(email, password)
+        conn.sendmail(email, email, 'Subject: ' + game + ' in Pinnacle\n\nPick: ' + str(pick) + ' , Odd: ' + str(odd))
+        global terminate
+        terminate = True
+        
+schedule.every(1).minutes.do(Notify)
+
+while not terminate:
+    schedule.run_pending()
+    time.sleep(1)
