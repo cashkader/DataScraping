@@ -17,7 +17,7 @@ def send_message(msg):
         'text': msg,
         'parse_mode': 'HTML'
     }
-    return requests.post('https://api.telegram.org/bot(token)/sendMessage'.format(token=telegram_token), data=payload).content
+    return requests.post('https://api.telegram.org/bot{token}/sendMessage'.format(token=telegram_token), data=payload).content
 
 def fi(bookie_xpath):
     try:
