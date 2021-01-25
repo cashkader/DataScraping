@@ -8,9 +8,9 @@ Games, HomeOdds, DrawOdds, AwayOdds = ([],[],[],[])
 
 for page in range (1,3):
     driver.get(url+str(page))
-    time.sleep(5)
+    time.sleep(2)
     driver.refresh()
-    time.sleep(3)
+    time.sleep(2)
     for game in range (1,21):
         try:
             Game = driver.find_element_by_xpath("""//*[@id="wrapper"]/main/section/div/div[2]/table/tbody/tr["""+str(game)+"""]/td[3]/a""").text
@@ -34,4 +34,7 @@ DrawOdd = [odd[:4].replace(",", ".") for odd in DrawOdds]
 AwayOdd = [odd[:4].replace(",", ".") for odd in AwayOdds]
 
 df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, HomeOdd, DrawOdd, AwayOdd)), columns =['Date', 'HomeTeam', 'AwayTeam', 'HomeOdd', 'DrawOdd', 'AwayOdd']) 
+df['Date'] = [date[:6]+str(21)+date[6:] for date in df['Date']]
+df['Date'] = pd.to_datetime(df['Date'])
+
 df.to_excel('tippmix.xlsx', encoding='utf-8', index=False)
