@@ -1,5 +1,5 @@
 from selenium import webdriver
-import time, re
+import time, re, os, pandas as pd
 
 driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
 url = 'https://www.tippmix.hu/sportfogadas#?sportid=1&countryid=42422&competitionid=44921&page='
