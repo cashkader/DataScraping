@@ -1,4 +1,6 @@
-import bs4, requests, pandas as pd
+import bs4, requests, os, pandas as pd
+
+os.chdir(r'C:\Users\Markos\Desktop\Esoccer Models')
 
 HomeTeam, AwayTeam, Score, Date, OddsLinks = ([],[],[],[],[])
 
@@ -36,10 +38,13 @@ df['Datetime'] = pd.to_datetime(df['Time'])
 cols = ['Datetime', 'HomeTeam', 'AwayTeam', 'HomeGoals', 'AwayGoals']
 df = df[cols]
 df = df.reindex(index=df.index[::-1])
+df
 
 df['Date'] = df['Datetime'].dt.date
 df = df.drop_duplicates(subset=['HomeTeam', 'AwayTeam', 'HomeGoals', 'AwayGoals', 'Date'], keep='first')
+del df2['Date']
 del df['Date']
+df2
 
-df.to_excel('df.xlsx', encoding='utf-8', index=False)
+df.to_excel('Results LigaPro.xlsx', encoding='utf-8', index=False)
 
