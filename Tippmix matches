@@ -8,9 +8,8 @@ Games, HomeOdds, DrawOdds, AwayOdds = ([],[],[],[])
 
 for page in range (1,3):
     driver.get(url+str(page))
-    time.sleep(2)
     driver.refresh()
-    time.sleep(2)
+    time.sleep(3)
     for game in range (1,21):
         try:
             Game = driver.find_element_by_xpath("""//*[@id="wrapper"]/main/section/div/div[2]/table/tbody/tr["""+str(game)+"""]/td[3]/a""").text
