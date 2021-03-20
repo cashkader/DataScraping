@@ -36,4 +36,8 @@ df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, HomeOdd, DrawOdd, AwayOdd))
 df['Date'] = [date[:6]+str(21)+date[6:] for date in df['Date']]
 df['Date'] = pd.to_datetime(df['Date'])
 
+df.insert(loc=2, column='blank3', value=['' for i in range(df.shape[0])])
+df.insert(loc=2, column='blank2', value=['' for i in range(df.shape[0])])
+df.insert(loc=1, column='blank1', value=['' for i in range(df.shape[0])])
+
 df.to_excel('tippmix.xlsx', encoding='utf-8', index=False)
