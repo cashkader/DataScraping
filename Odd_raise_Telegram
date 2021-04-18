@@ -1,7 +1,7 @@
 #! python3
 
 from selenium import webdriver
-import time, schedule
+import time, schedule, requests
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
