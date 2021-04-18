@@ -1,7 +1,9 @@
 from selenium import webdriver
 import time, schedule
 
-driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe')
+options = webdriver.ChromeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+driver = webdriver.Chrome(executable_path=r'C:\Users\Markos\MyPythonScripts\chromedriver.exe', options=options)
 telegram_token = '1574424631:AAFXH0EdNXiJSbm6yFasM7F_y8GIovp8XaM'
 telegram_chat_id = '-1001155462245'
 
