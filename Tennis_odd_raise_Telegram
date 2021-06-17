@@ -55,7 +55,6 @@ def Notify():
             odds_table.update({bookies(i):odd_list})
         else:
             break
-    print(odds_table)
     try:    
         if 'Pinnacle' in odds_table and float(odds_table['Pinnacle'][pick_d[pick]]) >= float(odd):
             send_message(game + '\nPick: ' + str(pick) + ' , Odd: ' + str(odds_table['Pinnacle'][pick_d[pick]]))
