@@ -32,6 +32,8 @@ AwayOdds = [odd[:4].replace(",", ".") for odd in AwayOdds]
 
 HomeTeams, AwayTeams = ([w.replace('FRANCIA', 'FRANCE') for w in HomeTeams],[w.replace('FRANCIA', 'FRANCE') for w in AwayTeams])
 HomeTeams, AwayTeams = ([w.replace('BÉLGICA', 'BELGIUM') for w in HomeTeams],[w.replace('BÉLGICA', 'BELGIUM') for w in AwayTeams])
+HomeTeams, AwayTeams = ([w.replace('INGLATERRA', 'ENGLAND') for w in HomeTeams],[w.replace('INGLATERRA', 'ENGLAND') for w in AwayTeams])
+HomeTeams, AwayTeams = ([w.replace('EGIPTO', 'EGYPT') for w in HomeTeams],[w.replace('EGIPTO', 'EGYPT') for w in AwayTeams])
 
 df = pd.DataFrame(list(zip(HomeTeams, AwayTeams, HomeOdds, DrawOdds, AwayOdds)), columns =['HomeTeam', 'AwayTeam', 'HomeOdd', 'DrawOdd', 'AwayOdd']) 
 
