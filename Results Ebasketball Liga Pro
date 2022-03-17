@@ -19,6 +19,8 @@ for page in range (1,3):
         Date.append(DT[0].text.strip())
         OddsLinks.extend([a['href'] for a in SC])
         
+HomeTeam, AwayTeam = ([re.search("[^\n]+ \((?P<team>[^\n]+)\) [^\n]+", w).group("team") + " Esports" if "(" in w else w for w in HomeTeam],[re.search("[^\n]+ \((?P<team>[^\n]+)\) [^\n]+", w).group("team") + " Esports" if "(" in w else w for w in AwayTeam])
+
 df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, Score)), columns =['Date', 'HomeTeam', 'AwayTeam', 'Score']) 
 df['HomeGoals'] = df['Score'].apply(lambda x: x.split('-')[0])
 df['AwayGoals'] = df['Score'].apply(lambda x: x.split('-')[-1])
