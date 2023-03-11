@@ -1,26 +1,30 @@
 import bs4, requests, pandas as pd, os
 
-os.chdir(r'C:\Users\Markos\Desktop\Tippmix')
+os.chdir(r'C:\Users\Markos\Desktop\Esoccer Models')
 headers = {'User-Agent': 'Chrome'}
 
 HomeTeam, AwayTeam, Score, Date, OddsLinks = ([],[],[],[],[])
 
 for page in range (1,2):
-    res = requests.get('https://betsapi.com/le/23114/Esoccer-GT-Leagues-%E2%80%93-12-mins-play/p.'+str(page), headers=headers)
+    res = requests.get('https://betsapi.com/le/23114/Esoccer-GT-Leagues-–-12-mins-play/p.'+str(page), headers=headers)
     soup = bs4.BeautifulSoup(res.text, features = "lxml")
     for num in range (1,31):
-        HT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(3) > a:nth-child(1)')
-        AT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(3) > a:nth-child(2)')
-        SC = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(4) > a')
-        DT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td.dt_n')
-        HomeTeam.append(HT[0].text.strip())
-        AwayTeam.append(AT[0].text.strip())
-        Score.append(SC[0].text.strip())
-        Date.append(DT[0].text.strip())
-        OddsLinks.extend([a['href'] for a in SC])
+        try:
+            HT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(3) > a:nth-child(1)')
+            AT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(3) > a:nth-child(2)')
+            SC = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td:nth-child(4) > a')
+            DT = soup.select('body > div > div > div.my-3.my-md-5 > div > div.tab-content > div.tab-pane.active > div > div.col-md-9 > table > tbody > tr:nth-child('+str(num)+') > td.dt_n')
+            HomeTeam.append(HT[0].text.strip())
+            AwayTeam.append(AT[0].text.strip())
+            Score.append(SC[0].text.strip())
+            Date.append(DT[0].text.strip())
+            OddsLinks.extend([a['href'] for a in SC])
+        except IndexError:
+            pass
         
 OddsLinks = ['https://betsapi.com'+link[:2]+'s'+link[2:] for link in OddsLinks]
-Home, Away = ([w.replace(' Esports', '') for w in HomeTeam], [w.replace(' Esports', '') for w in AwayTeam])
+Home = [w.replace(' Esports', '') for w in HomeTeam]
+Away = [w.replace(' Esports', '') for w in AwayTeam]
 
 df = pd.DataFrame(list(zip(Date, OddsLinks, Home, Score, Away)), columns =['Date', 'OddsLinks', 'HomeTeam', 'Score', 'AwayTeam']) 
 df['HomeGoals'] = df['Score'].apply(lambda x: x.split('-')[0])
@@ -42,4 +46,4 @@ df2 = df.drop_duplicates(subset=['HomeTeam', 'AwayTeam', 'HomeGoals', 'AwayGoals
 del df2['Date']
 del df['Date']
 
-df2.to_excel('GT_results.xlsx', encoding='utf-8', index=False)
+df2.to_excel('Results GT.xlsx', encoding='utf-8', index=False)
