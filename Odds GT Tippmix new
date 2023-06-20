@@ -1,0 +1,43 @@
+from selenium import webdriver
+import time, re, os, pandas as pd
+
+os.chdir(r'C:\Users\lstsuser03\Desktop\GT')
+driver = webdriver.Chrome(executable_path=r'C:\Users\lstsuser03\Documents\My Python Projects\chromedriver.exe')
+url = 'https://www.tippmix.hu/sportfogadas#?sportid=999&countryid=99999988&page='
+
+Games, HomeOdds, DrawOdds, AwayOdds = ([],[],[],[])
+for page in range (1,5):
+    driver.get(url+str(page))
+    driver.refresh()
+    time.sleep(3)
+    for game in range (1,21):
+        try:
+            Game = driver.find_element_by_xpath("""//*[@id="wrapper"]/main/section/div/div[2]/table/tbody/tr["""+str(game)+"""]/td[3]/a""").text
+            HO = driver.find_element_by_xpath("""//*[@id="wrapper"]/main/section/div/div[2]/table/tbody/tr["""+str(game)+"""]/td[4]/button[1]""").text
+            DO = driver.find_element_by_xpath("""//*[@id="wrapper"]/main/section/div/div[2]/table/tbody/tr["""+str(game)+"""]/td[5]/button[1]""").text
+            AO = driver.find_element_by_xpath("""//*[@id="wrapper"]/main/section/div/div[2]/table/tbody/tr["""+str(game)+"""]/td[6]/button[1]""").text
+            Games.append(Game)
+            HomeOdds.append(HO)
+            DrawOdds.append(DO)
+            AwayOdds.append(AO)
+        except:
+            break
+            
+Match = [item.split('\n')[1] for item in Games if 'GT' in item]
+HomeTeam = [item.split('(')[1].split(')')[0] for item in Games if 'GT' in item]
+AwayTeam = [item.split('(')[2].split(')')[0] for item in Games if 'GT' in item]
+Date = [game[-12:] for game in Games]
+
+HomeOdd = [item2[:4].replace(",", ".") for item1, item2 in zip(Games, HomeOdds) if 'GT' in item1]
+DrawOdd = [item2[:4].replace(",", ".") for item1, item2 in zip(Games, DrawOdds) if 'GT' in item1]
+AwayOdd = [item2[:4].replace(",", ".") for item1, item2 in zip(Games, AwayOdds) if 'GT' in item1]
+
+df = pd.DataFrame(list(zip(Date, HomeTeam, AwayTeam, HomeOdd, DrawOdd, AwayOdd)), columns =['Date', 'HomeTeam', 'AwayTeam', 'HomeOdd', 'DrawOdd', 'AwayOdd']) 
+df['Date'] = [date[:6]+str(21)+date[6:] for date in df['Date']]
+df['Date'] = pd.to_datetime(df['Date'])
+
+df.insert(loc=2, column='blank3', value=['' for i in range(df.shape[0])])
+df.insert(loc=2, column='blank2', value=['' for i in range(df.shape[0])])
+df.insert(loc=1, column='blank1', value=['' for i in range(df.shape[0])])
+
+df.to_excel('tippmix.xlsx', encoding='utf-8', index=False)
