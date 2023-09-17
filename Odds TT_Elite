@@ -1,0 +1,32 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+import time, re, os, pandas as pd
+
+os.chdir(r'C:\Users\markr\Dropbox\TT Model')
+webdriver_service = Service(r'C:\Users\markr\Documents\Python\chromedriver.exe')
+driver = webdriver.Chrome(service=webdriver_service)
+url = 'https://www.betmonitor.com/odds-comparison/table-tennis/poland-tt-elite-series/10021636'
+
+Games, HomeOdds, DrawOdds, AwayOdds, Dates = ([],[],[],[],[])
+
+driver.get(url)
+driver.refresh()
+time.sleep(3)
+for game in range (3,99):
+    try:
+        Game = driver.find_element("xpath","""//*[@id="content"]/div["""+str(game)+"""]/div[2]/div[2]/a""").text
+        HO = driver.find_element("xpath","""//*[@id="content"]/div["""+str(game)+"""]/div[3]/div[1]/a/span[1]""").text
+        AO = driver.find_element("xpath","""//*[@id="content"]/div["""+str(game)+"""]/div[3]/div[2]/a/span[1]""").text
+        Date = driver.find_element("xpath","""//*[@id="content"]/div["""+str(game)+"""]/div[1]/span""").text
+        Games.append(Game)
+        HomeOdds.append(HO)
+        AwayOdds.append(AO)
+        Dates.append(Date)
+    except:
+        break
+
+HomeTeam = [item.split(' - ')[0] for item in Games]
+AwayTeam = [item.split(' - ')[1] for item in Games]
+df = pd.DataFrame(list(zip(HomeTeam, AwayTeam, HomeOdds, AwayOdds, Dates)), columns =['HomeTeam', 'AwayTeam', 'HomeOdd', 'AwayOdd', 'Date'])
+
+df.to_excel('TT Elite odds.xlsx', encoding='utf-8', index=False)
